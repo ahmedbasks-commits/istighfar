@@ -1,0 +1,291 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0E2A25">
+<meta name="mobile-web-app-capable" content="yes">
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="icon.svg" type="image/svg+xml">
+<title>استغفار</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&display=swap">
+<style>
+:root {
+  --bg: #0E2A25;
+  --surface: #153631;
+  --track: #1F443D;
+  --gold: #E0B866;
+  --cream: #F5EFE0;
+  --muted: #A9BDB5;
+  --coral: #F29B7D;
+  --line: #2C5249;
+  --bar-off: #5E7F76;
+  --font: 'Tajawal', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color-scheme: dark;
+}
+html { background: var(--bg); }
+body {
+  background: var(--bg);
+  color: var(--cream);
+  font-family: var(--font);
+  font-size: 16px;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+  padding-block: 20px 28px;
+}
+.app { max-width: 440px; margin: 0 auto; display: flex; flex-direction: column; gap: 18px; }
+.head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.head h1 { margin: 0; font-size: 26px; font-weight: 800; }
+.date { font-size: 14px; color: var(--muted); }
+.head-end { display: flex; align-items: center; gap: 8px; }
+.chip { display: flex; align-items: center; gap: 6px; padding: 8px 14px; border-radius: 999px; background: var(--surface); color: var(--gold); font-size: 14px; font-weight: 700; white-space: nowrap; }
+.icon-btn { width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; border: 0; border-radius: 14px; background: var(--surface); color: var(--cream); cursor: pointer; }
+.icon-btn:focus-visible, .tap:focus-visible, .ghost:focus-visible, input:focus-visible, select:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+.ring { position: relative; width: 260px; height: 260px; align-self: center; max-width: 100%; }
+.ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring .fg { transition: stroke-dashoffset .2s; }
+.ring-text { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 2px; }
+.big { font-size: 56px; font-weight: 800; line-height: 1; font-variant-numeric: tabular-nums; }
+.sub { font-size: 16px; color: var(--muted); }
+.pct { font-size: 15px; font-weight: 700; color: var(--gold); }
+.card { display: flex; flex-direction: column; gap: 6px; padding: 14px 16px; border-radius: 20px; background: var(--surface); }
+.row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.muted { color: var(--muted); font-size: 14px; }
+.muted b { color: var(--cream); font-variant-numeric: tabular-nums; }
+.status { font-size: 17px; font-weight: 800; color: var(--gold); }
+.status.behind { color: var(--coral); }
+.hint { font-size: 13px; color: var(--muted); }
+.tap { min-height: 112px; border: 0; border-radius: 28px; background: var(--gold); color: var(--bg); display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; cursor: pointer; font-family: inherit; touch-action: manipulation; user-select: none; -webkit-user-select: none; -webkit-tap-highlight-color: transparent; }
+.tap:active { transform: scale(.98); }
+.tap .t1 { font-size: 32px; font-weight: 800; }
+.tap .t2 { font-size: 14px; font-weight: 500; }
+.pair { display: flex; gap: 12px; }
+.ghost { flex: 1; min-height: 52px; border: 1px solid var(--line); border-radius: 16px; background: transparent; color: var(--cream); font-family: inherit; font-size: 16px; font-weight: 500; cursor: pointer; touch-action: manipulation; }
+.week { display: flex; flex-direction: column; gap: 8px; }
+.week h2, .settings h2 { margin: 0; font-size: 16px; font-weight: 700; }
+.bars { position: relative; height: 96px; display: flex; align-items: flex-end; gap: 8px; }
+.bars .goal-line { position: absolute; left: 0; right: 0; border-top: 1px dashed var(--bar-off); }
+.bar { flex: 1; min-width: 0; border-radius: 6px 6px 0 0; background: var(--bar-off); position: relative; }
+.bar.hit { background: var(--gold); }
+.labels { display: flex; gap: 8px; }
+.labels span { flex: 1; min-width: 0; text-align: center; font-size: 12px; color: var(--muted); }
+.settings { display: flex; flex-direction: column; gap: 12px; }
+.field { display: flex; align-items: center; justify-content: space-between; gap: 12px; min-height: 52px; padding: 0 16px; border-radius: 16px; background: var(--surface); font-size: 16px; font-weight: 500; }
+.field input[type=number], .field select { width: 120px; min-height: 40px; padding: 0 10px; border: 1px solid var(--line); border-radius: 12px; background: var(--bg); color: var(--cream); font-family: inherit; font-size: 16px; }
+.field input[type=checkbox] { width: 24px; height: 24px; accent-color: var(--gold); }
+.install { font-size: 13px; color: var(--muted); text-align: center; line-height: 1.6; }
+</style>
+</head>
+<body>
+<div class="app" dir="rtl" lang="ar">
+  <div class="head">
+    <div>
+      <h1>الاستغفار</h1>
+      <div class="date" id="date"></div>
+    </div>
+    <div class="head-end">
+      <div class="chip" title="أيام متتالية بلغت الهدف">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#E0B866" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 3c1 3 5 5 5 10a5 5 0 0 1-10 0c0-2 1-3 2-4 0 2 1 3 2 3 0-3-1-6 1-9z"/></svg>
+        <span id="streak">0 يوم</span>
+      </div>
+      <button class="icon-btn" id="gear" aria-label="الإعدادات" aria-expanded="false" aria-controls="settings">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
+      </button>
+    </div>
+  </div>
+
+  <div class="ring">
+    <svg viewBox="0 0 260 260" fill="none" aria-hidden="true">
+      <circle cx="130" cy="130" r="112" stroke="#1F443D" stroke-width="16"/>
+      <circle class="fg" id="fg" cx="130" cy="130" r="112" stroke="#E0B866" stroke-width="16" stroke-linecap="round"/>
+    </svg>
+    <div class="ring-text" role="status" aria-live="off">
+      <span class="big" id="count">0</span>
+      <span class="sub" id="of">من 10,000</span>
+      <span class="pct" id="pct">0%</span>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="row">
+      <span class="muted">إيقاع اليوم</span>
+      <span class="status" id="status"></span>
+    </div>
+    <div class="row">
+      <span class="muted">المفروض الآن <b id="expected">0</b></span>
+      <span class="muted">باقي <b id="left">0</b></span>
+    </div>
+    <span class="hint" id="hint"></span>
+  </div>
+
+  <button class="tap" id="tap" type="button">
+    <span class="t1">أستغفر الله</span>
+    <span class="t2">اضغط للعدّ</span>
+  </button>
+
+  <div class="pair">
+    <button class="ghost" id="undo" type="button">تراجع</button>
+    <button class="ghost" id="add100" type="button">أضف 100</button>
+  </div>
+
+  <div class="card week">
+    <h2>آخر 7 أيام</h2>
+    <div class="bars" id="bars"></div>
+    <div class="labels" id="labels"></div>
+  </div>
+
+  <div class="settings" id="settings" hidden>
+    <h2>الإعدادات</h2>
+    <label class="field" for="goal"><span>الهدف اليومي</span><input id="goal" type="number" inputmode="numeric" min="100" step="500"></label>
+    <label class="field" for="start"><span>بداية اليوم</span><select id="start"></select></label>
+    <label class="field" for="end"><span>نهاية اليوم</span><select id="end"></select></label>
+    <label class="field" for="vib"><span>اهتزاز عند كل ضغطة</span><input id="vib" type="checkbox"></label>
+    <label class="field" for="wake"><span>إبقاء الشاشة مضوية</span><input id="wake" type="checkbox"></label>
+  </div>
+
+  <p class="install">لتثبيته على هاتفك: من قائمة Chrome اختر «إضافة إلى الشاشة الرئيسية».</p>
+</div>
+
+<script>
+(function () {
+  var KEY = 'istighfar:v1';
+  var S = { goal: 10000, start: 6, end: 22, vibrate: true, wake: false, days: {} };
+  var CIRC = 2 * Math.PI * 112;
+
+  function $(id) { return document.getElementById(id); }
+  function load() {
+    try {
+      var raw = localStorage.getItem(KEY);
+      if (raw) { var o = JSON.parse(raw); for (var k in o) S[k] = o[k]; }
+    } catch (e) {}
+  }
+  function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch (e) {} }
+  function pad(n) { return (n < 10 ? '0' : '') + n; }
+  function key(d) { d = d || new Date(); return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function fmt(n) { return Number(n).toLocaleString('en-US'); }
+  function hLabel(h) {
+    if (h === 0 || h === 24) return '12:00 ليلًا';
+    if (h < 12) return h + ':00 صباحًا';
+    if (h === 12) return '12:00 ظهرًا';
+    return (h - 12) + ':00 مساءً';
+  }
+  function count() { return S.days[key()] || 0; }
+  function setCount(n) {
+    S.days[key()] = Math.max(0, Math.min(n, S.goal * 3));
+    var ks = Object.keys(S.days).sort();
+    while (ks.length > 60) delete S.days[ks.shift()];
+    save();
+  }
+  function streak() {
+    var n = 0, d = new Date();
+    if ((S.days[key(d)] || 0) >= S.goal) n++;
+    for (var i = 0; i < 400; i++) {
+      d.setDate(d.getDate() - 1);
+      if ((S.days[key(d)] || 0) >= S.goal) n++; else break;
+    }
+    return n;
+  }
+  function buzz() { if (S.vibrate && navigator.vibrate) { try { navigator.vibrate(12); } catch (e) {} } }
+
+  var wakeLock = null;
+  function applyWake() {
+    try {
+      if (S.wake && navigator.wakeLock && document.visibilityState === 'visible') {
+        navigator.wakeLock.request('screen').then(function (l) { wakeLock = l; }).catch(function () {});
+      } else if (!S.wake && wakeLock) { wakeLock.release(); wakeLock = null; }
+    } catch (e) {}
+  }
+
+  function render() {
+    var c = count(), g = S.goal;
+    var prog = Math.min(1, c / g);
+    var fg = $('fg');
+    fg.setAttribute('stroke-dasharray', CIRC.toFixed(1));
+    fg.setAttribute('stroke-dashoffset', (CIRC * (1 - prog)).toFixed(1));
+    $('count').textContent = fmt(c);
+    $('of').textContent = 'من ' + fmt(g);
+    $('pct').textContent = Math.floor(prog * 100) + '%';
+    $('left').textContent = fmt(Math.max(0, g - c));
+    $('streak').textContent = streak() + ' يوم';
+
+    var now = new Date();
+    var nowH = now.getHours() + now.getMinutes() / 60;
+    var span = Math.max(1, S.end - S.start);
+    var frac = Math.max(0, Math.min(1, (nowH - S.start) / span));
+    var expected = Math.round(frac * g);
+    var diff = c - expected;
+    var perHour = Math.round(g / span);
+    var st = $('status');
+    $('expected').textContent = fmt(expected);
+    if (c >= g) {
+      st.textContent = 'تم الورد'; st.className = 'status';
+      $('hint').textContent = 'ما شاء الله، أتممت وردك اليوم.';
+    } else if (diff < 0) {
+      st.textContent = 'متأخر بـ ' + fmt(-diff); st.className = 'status behind';
+      $('hint').textContent = 'زيد حوالي ' + Math.ceil(-diff / 60) + ' دقيقة باش تلحق · ' + fmt(perHour) + ' في الساعة';
+    } else {
+      st.textContent = diff === 0 ? 'على الإيقاع' : 'متقدم بـ ' + fmt(diff); st.className = 'status';
+      $('hint').textContent = (nowH < S.start ? 'الإيقاع يبدأ الساعة ' + hLabel(S.start) : 'كمّل على نفس الإيقاع') + ' · ' + fmt(perHour) + ' في الساعة';
+    }
+
+    var vals = [], labs = [], d = new Date();
+    for (var i = 6; i >= 0; i--) {
+      var x = new Date(d.getFullYear(), d.getMonth(), d.getDate() - i);
+      vals.push(S.days[key(x)] || 0);
+      labs.push(i === 0 ? 'اليوم' : x.toLocaleDateString('ar-u-nu-latn', { weekday: 'short' }));
+    }
+    var max = Math.max.apply(null, vals.concat([g * 1.2]));
+    var H = 96, html = '<div class="goal-line" style="bottom:' + Math.round(g / max * H) + 'px"></div>';
+    vals.forEach(function (v) {
+      html += '<div class="bar' + (v >= g ? ' hit' : '') + '" style="height:' + Math.max(2, Math.round(v / max * H)) + 'px" title="' + fmt(v) + '"></div>';
+    });
+    $('bars').innerHTML = html;
+    $('labels').innerHTML = labs.map(function (l) { return '<span>' + l + '</span>'; }).join('');
+  }
+
+  function fillSelect(id, from, to, cur) {
+    var s = $(id), h = '';
+    for (var i = from; i <= to; i++) h += '<option value="' + i + '"' + (i === cur ? ' selected' : '') + '>' + hLabel(i) + '</option>';
+    s.innerHTML = h;
+  }
+
+  load();
+  $('date').textContent = new Date().toLocaleDateString('ar-u-nu-latn', { weekday: 'long', day: 'numeric', month: 'long' });
+  $('goal').value = S.goal;
+  fillSelect('start', 3, 11, S.start);
+  fillSelect('end', 17, 23, S.end);
+  $('vib').checked = !!S.vibrate;
+  $('wake').checked = !!S.wake;
+
+  $('tap').addEventListener('click', function () { buzz(); setCount(count() + 1); render(); });
+  $('undo').addEventListener('click', function () { setCount(count() - 1); render(); });
+  $('add100').addEventListener('click', function () { buzz(); setCount(count() + 100); render(); });
+  $('gear').addEventListener('click', function () {
+    var box = $('settings'), open = box.hidden;
+    box.hidden = !open;
+    this.setAttribute('aria-expanded', open ? 'true' : 'false');
+    if (open) box.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  $('goal').addEventListener('change', function () {
+    var v = parseInt(this.value, 10);
+    if (!isNaN(v)) { S.goal = Math.max(100, v); this.value = S.goal; save(); render(); }
+  });
+  $('start').addEventListener('change', function () { S.start = parseInt(this.value, 10); save(); render(); });
+  $('end').addEventListener('change', function () { S.end = parseInt(this.value, 10); save(); render(); });
+  $('vib').addEventListener('change', function () { S.vibrate = this.checked; save(); });
+  $('wake').addEventListener('change', function () { S.wake = this.checked; save(); applyWake(); });
+
+  document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'visible') { applyWake(); render(); } });
+  setInterval(render, 60000);
+  render();
+})();
+</script>
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', function () {
+    navigator.serviceWorker.register('sw.js').catch(function () {});
+  });
+}
+</script>
+</body>
+                                                               </html>
