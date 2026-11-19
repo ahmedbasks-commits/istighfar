@@ -112,7 +112,7 @@ body {
     </svg>
     <div class="ring-text" role="status" aria-live="off">
       <span class="big" id="count">0</span>
-      <span class="sub" id="of">من 10,000</span>
+      <span class="sub" id="of">من 5,250</span>
       <span class="pct" id="pct">0%</span>
     </div>
   </div>
@@ -180,7 +180,7 @@ body {
     { id: 'd5', name: 'صلى الله عليه وسلم', t: 300 },
     { id: 'd7', name: 'رضيت بالله ربًّا وبالإسلام دينًا وبمحمد ﷺ نبيًّا', t: 50 }
   ];
-  var S = { goal: 10000, start: 6, end: 22, vibrate: true, wake: false, days: {}, adhkar: null, sel: 'i', defV: 0, lastDay: '' };
+  var S = { goal: 5250, goalV: 0, start: 6, end: 22, vibrate: true, wake: false, days: {}, adhkar: null, sel: 'i', defV: 0, lastDay: '' };
   var CIRC = 2 * Math.PI * 112;
 
   function $(id) { return document.getElementById(id); }
@@ -189,6 +189,7 @@ body {
       var raw = localStorage.getItem(KEY);
       if (raw) { var o = JSON.parse(raw); for (var k in o) S[k] = o[k]; }
     } catch (e) {}
+    if (S.goalV !== 1) { S.goal = 5250; S.goalV = 1; save(); }
     if (!Array.isArray(S.adhkar)) S.adhkar = [];
     if (S.defV !== 3) {
       var custom = S.adhkar.filter(function (a) { return String(a.id).charAt(0) === 'a'; });
@@ -410,7 +411,4 @@ body {
   }
 
   load();
-  $('date').textContent = new Date().toLocaleDateString('ar-u-nu-latn', { weekday: 'long', day: 'numeric', month: 'long' });
-  $('goal').value = S.goal;
-  fillSelect('start', 3, 11, S.start);
-  
+  $('date').textContent = new Date().toLocaleDateString('ar-u-nu-latn', { weekday: 'long', day: 'numeric', month: 'long' 
